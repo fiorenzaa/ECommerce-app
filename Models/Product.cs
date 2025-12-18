@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECommerce.Models
 {
@@ -13,6 +14,7 @@ namespace ECommerce.Models
 
     [Required(ErrorMessage = "Harga produk harus diisi.")]
     [Range(0.01, double.MaxValue, ErrorMessage = "Nilai harus lebih dari 0.")]
+    [Column(TypeName = "decimal(18,2)")]
     public decimal Price { get; set; }
 
     [Required(ErrorMessage = "Kategori produk harus diisi.")]

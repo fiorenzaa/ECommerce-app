@@ -13,5 +13,14 @@ namespace ECommerce.Data
         public DbSet<Product> Product => Set<Product>();
         public DbSet<Cart> Carts => Set<Cart>();
         public DbSet<CartItem> CartItems => Set<CartItem>();
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            // Contoh: Mengatur nama tabel secara eksplisit
+            modelBuilder.Entity<Product>().ToTable("Product");
+            modelBuilder.Entity<Cart>().ToTable("Cart");
+            modelBuilder.Entity<CartItem>().ToTable("CartItem");
+        }
     }
 }

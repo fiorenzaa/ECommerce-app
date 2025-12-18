@@ -3,6 +3,7 @@ using ECommerce.Data;
 using ECommerce.Models;
 using ECommerce.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using ECommerce.DTO;
 
 namespace ECommerce.Services
 {
@@ -19,24 +20,33 @@ namespace ECommerce.Services
 
         public async Task SyncProductsFromApiAsync()
         {
-            if (await _context.Product.AnyAsync())
+            if (await _context.Product.AsNoTracking().AnyAsync())
                 return;
 
             var response = await _httpClient.GetAsync("https://fakestoreapi.com/products");
             response.EnsureSuccessStatusCode();
 
             var json = await response.Content.ReadAsStringAsync();
-            var products = JsonSerializer.Deserialize<List<Product>>(json, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            var apiProducts = JsonSerializer.Deserialize<List<ProductDTO>>(
+                json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+            );
 
-            if (products != null)
+            if (apiProducts == null) return;
+
+            var products = apiProducts.Select(p => new Product
             {
-                _context.Product.AddRange(products);
-                await _context.SaveChangesAsync();
-            }
+                Title = p.Title,
+                Price = p.Price,
+                Category = p.Category,
+                Image = p.Image,
+                Description = p.Description
+            }).ToList();
+
+            _context.Product.AddRange(products);
+            await _context.SaveChangesAsync();
         }
+
 
         public async Task<List<Product>> GetProductsAsync()
         {
