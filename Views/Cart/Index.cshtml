@@ -1,0 +1,49 @@
+@model ECommerce.Models.Cart
+
+<h2>Keranjang Belanja</h2>
+
+@if (!Model.Items.Any())
+{
+  <p>Keranjang masih kosong.</p>
+}
+else
+{
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Produk</th>
+        <th>Harga</th>
+        <th>Qty</th>
+        <th>Subtotal</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var item in Model.Items)
+      {
+        <tr>
+          <td>@item.Product.Title</td>
+          <td>
+            @item.Product.Price.ToString("C",
+            System.Globalization.CultureInfo.GetCultureInfo("en-US"))
+          </td>
+          <td>
+            <a class="btn btn-sm btn-secondary" asp-action="Decrease" asp-route-itemId="@item.Id">−</a>
+
+            <span class="mx-2">@item.Quantity</span>
+
+            <a class="btn btn-sm btn-secondary" asp-action="Increase" asp-route-itemId="@item.Id">+</a>
+          </td>
+          <td>
+            @((item.Product.Price * item.Quantity).ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US")))
+          </td>
+          <td>
+            <a class="btn btn-danger btn-sm" asp-action="Remove" asp-route-itemId="@item.Id">
+              Hapus
+            </a>
+          </td>
+        </tr>
+        }
+    </tbody>
+  </table>
+}

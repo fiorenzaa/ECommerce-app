@@ -1,0 +1,18 @@
+@model List<ECommerce.Models.Product>
+
+<h2>Product List</h2>
+<a class="btn btn-primary" asp-action="Create">+ Add Product</a>
+
+<div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:20px;">
+  @foreach (var item in Model)
+  {
+    <div style="border:1px solid #ccc; padding:10px;">
+      <img src="@item.Image" width="150" height="150" />
+      <h4>@item.Title</h4>
+      <p>@item.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</p>
+      @* <small>@item.Category</small> *@
+      <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+      <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+    </div>
+  }
+</div>

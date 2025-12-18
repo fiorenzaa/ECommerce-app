@@ -1,0 +1,15 @@
+@model ECommerce.Models.Product
+
+<h2>Edit Product</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+
+    <input asp-for="Title" /><br/>
+    <input asp-for="Price" /><br/>
+    <input asp-for="Category" /><br/>
+    <input asp-for="Image" /><br/>
+    <textarea asp-for="Description"></textarea><br/>
+
+    <button type="submit">Update</button>
+</form>

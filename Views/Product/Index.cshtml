@@ -1,0 +1,55 @@
+@model List<ECommerce.Models.Product>
+
+<h2>Product List</h2>
+<a class="btn btn-primary" asp-controller="Cart" asp-action="Index">
+  🛒 Lihat Keranjang
+  <span id="cartCount"
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        0
+    </span>
+</a>
+@* <button  asp-controller="Cart" asp-action="Index" type="button" class="btn btn-outline-primary position-relative" id="cartButton">
+    🛒 Lihat Keranjang
+    <span id="cartCount"
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        0
+    </span>
+</button> *@
+
+<div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:20px;">
+  @foreach (var item in Model)
+  {
+    <div style="border:1px solid #ccc; padding:10px;">
+      <img src="@item.Image" width="150" height="150" />
+      <h4>@item.Title</h4>
+      <p>@item.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</p>
+      @* <small>@item.Category</small> *@
+      <a class="btn btn-primary add-to-cart" asp-controller="Cart" asp-action="Add" asp-route-productId="@item.Id">
+        Add to Cart
+      </a>
+    </div>
+  }
+</div>
+
+<script>
+  document.querySelectorAll(".add-to-cart").forEach(btn => {
+    btn.addEventListener("click", function () {
+      const productId = this.dataset.productId;
+
+      fetch("/Cart/Add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `productId=${productId}`
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            // 🔴 INI YANG MENGUBAH ANGKA
+            document.getElementById("cartCount").innerText = data.totalItems;
+          }
+        });
+    });
+  });
+</script>
