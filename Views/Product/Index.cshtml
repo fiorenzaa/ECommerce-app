@@ -3,10 +3,6 @@
 <h2>Product List</h2>
 <a class="btn btn-primary" asp-controller="Cart" asp-action="Index">
   🛒 Lihat Keranjang
-  <span id="cartCount"
-          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-        0
-    </span>
 </a>
 @* <button  asp-controller="Cart" asp-action="Index" type="button" class="btn btn-outline-primary position-relative" id="cartButton">
     🛒 Lihat Keranjang
@@ -31,7 +27,7 @@
   }
 </div>
 
-<script>
+@* <script>
   document.querySelectorAll(".add-to-cart").forEach(btn => {
     btn.addEventListener("click", function () {
       const productId = this.dataset.productId;
@@ -52,4 +48,4 @@
         });
     });
   });
-</script>
+</script> *@
